@@ -1,13 +1,11 @@
 package br.com.zenon.fraud;
 
-import java.math.BigDecimal;
-
-import static br.com.zenon.fraud.Transaction.Type.*;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        Transaction transaction1 = new Transaction(
+        /*Transaction transaction1 = new Transaction(
                 1,
                 PAYMENT,
                 new BigDecimal("9839.64"),
@@ -18,8 +16,7 @@ public class Main {
                 new BigDecimal("0.0"),
                 new BigDecimal("0.0"),
                 false,
-                false
-        );
+                false);
         Transaction transaction2 = new Transaction(
                 743,
                 CASH_OUT,
@@ -36,6 +33,15 @@ public class Main {
 
         System.out.println(transaction1);
         System.out.println(transaction2);
+        System.out.println("==============================");*/
+
+        TransactionIngestor transactionIngestor = new TransactionIngestor("data/PS_20174392719_1491204439457_log.csv");
+        List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+
+        for (int i = 0; i < 10; i++) {
+        System.out.println(listaDeTransactions.get(i).toString());
+        }
+
     }
 
 }
