@@ -35,11 +35,15 @@ public class Main {
         System.out.println(transaction2);
         System.out.println("==============================");*/
 
-        TransactionIngestor transactionIngestor = new TransactionIngestor("data/PS_20174392719_1491204439457_log.csv");
+        /*TransactionIngestor transactionIngestor = new TransactionIngestor("data/PS_20174392719_1491204439457_log.csv");
         List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
-
         for (int i = 0; i < 10; i++) {
-        System.out.println(listaDeTransactions.get(i).toString());
+            System.out.println(listaDeTransactions.get(i).toString());
+        }*/
+        TransactionIngestor transactionIngestor = new TransactionIngestor("data/paysim_with_bad_data.csv");
+        List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        for (int i = 0; i < listaDeTransactions.toArray().length; i++) {
+            System.out.println(listaDeTransactions.get(i).toString());
         }
 
     }
