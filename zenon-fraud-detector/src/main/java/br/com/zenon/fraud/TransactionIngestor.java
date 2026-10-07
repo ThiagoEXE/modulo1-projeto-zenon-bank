@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class TransactionIngestor {
@@ -51,8 +50,8 @@ public class TransactionIngestor {
 
                     if (validacao) {
 
-                        Optional<Transaction> transaction = Optional.of(new Transaction(step, type, amount, nameOrig, oldbalanceOrg, newbalanceOrig, nameDest, oldbalanceDest, newbalanceDest, isFraud, isFlaggedFraud));
-                        this.transactions.add(transaction.get());
+                        Transaction transaction = new Transaction(step, type, amount, nameOrig, oldbalanceOrg, newbalanceOrig, nameDest, oldbalanceDest, newbalanceDest, isFraud, isFlaggedFraud);
+                        this.transactions.add(transaction);
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Erro: " + Arrays.toString(colunas) + " | " + e.getClass().getName() + ": " + e.getMessage());
@@ -86,7 +85,7 @@ public class TransactionIngestor {
             if (j == 0 && parseInt(colunas[j]) < 1) {
                 throw new IllegalArgumentException("step deve um número positivo: " + colunas[j]);
             }
-            if (colunas[j] == null || Objects.equals(colunas[j], "")) {
+            if (Optional.ofNullable(colunas[j]).orElse("").equals("")) {
                 throw new IllegalArgumentException("campo: " + cabecalho[j] + " não pode vazio");
             }
             if (cabecalho[j].equals("amount") && isNumeroNegativo(colunas[2])
