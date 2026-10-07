@@ -1,11 +1,13 @@
 package br.com.zenon.fraud;
 
+import static java.lang.Integer.parseInt;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
-
-import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class TransactionIngestor {
 
@@ -66,6 +68,17 @@ public class TransactionIngestor {
         return this.transactions;
     }
 
+    public boolean isNumeroNegativo(String numero) {
+        if (numero == null || numero.isEmpty()) {
+            return false;
+        }
+        try {
+            BigDecimal valor = new BigDecimal(numero);
+            return valor.compareTo(BigDecimal.ZERO) < 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     public boolean validarEntradaDeDados(String[] colunas, String[] linhaArquivo) {
 
         String linha = linhaArquivo[0];
@@ -79,11 +92,11 @@ public class TransactionIngestor {
                 System.err.println("Erro: " + Arrays.toString(colunas) + " campo: " + cabecalho[j]+ " não pode ser null");
                 return false;
             }
-            if (new BigDecimal(colunas[2]).compareTo(BigDecimal.ZERO) < 0
-                    || new BigDecimal(colunas[4]).compareTo(BigDecimal.ZERO) < 0
-                    || new BigDecimal(colunas[5]).compareTo(BigDecimal.ZERO) < 0
-                    || new BigDecimal(colunas[7]).compareTo(BigDecimal.ZERO) < 0
-                    || new BigDecimal(colunas[8]).compareTo(BigDecimal.ZERO) < 0) {
+            if (cabecalho[j].equals("amount") && isNumeroNegativo(colunas[2]) 
+                || cabecalho[j].equals("oldbalanceOrg") && isNumeroNegativo(colunas[4]) 
+                || cabecalho[j].equals("newbalanceOrg") && isNumeroNegativo(colunas[5]) 
+                || cabecalho[j].equals("oldbalanceDest") && isNumeroNegativo(colunas[7]) 
+                || cabecalho[j].equals("newbalanceDest") && isNumeroNegativo(colunas[8])) {
                 System.err.println("Erro: " + Arrays.toString(colunas) + " campo: " + cabecalho[j]+ " valor não pode ser negativo");
                 return false;
             }
