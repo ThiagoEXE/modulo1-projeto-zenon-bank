@@ -42,6 +42,7 @@ public class Main {
         }*/
         TransactionIngestor transactionIngestor = new TransactionIngestor("data/paysim_with_bad_data.csv");
         List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        System.out.println(listaDeTransactions.size());
         for (int i = 0; i < listaDeTransactions.toArray().length; i++) {
             System.out.println(listaDeTransactions.get(i).toString());
         }
