@@ -27,7 +27,7 @@ public class TransactionIngestor {
 
             String[] linhaArquivo = conteudo.split("\n");
 
-            for (int i = 1; i < linhaArquivo.length; i++) {
+            for (int i = 1; i <= 50000; i++) {
                 String linha = linhaArquivo[i];
                 String[] colunas = linha.split(",");
 
@@ -43,8 +43,8 @@ public class TransactionIngestor {
                     String nameDest = colunas[6];
                     BigDecimal oldbalanceDest = new BigDecimal(colunas[7]);
                     BigDecimal newbalanceDest = new BigDecimal(colunas[8]);
-                    boolean isFraud = Boolean.valueOf(colunas[9]);
-                    boolean isFlaggedFraud = Boolean.valueOf(colunas[10]);
+                    boolean isFraud = "1".equals(colunas[9].trim());
+                    boolean isFlaggedFraud = "1".equals(colunas[10].trim());
 
                     boolean validacao = validarEntradaDeDados(colunas, linhaArquivo);
 

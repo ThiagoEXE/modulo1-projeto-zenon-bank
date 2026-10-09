@@ -1,6 +1,9 @@
 package br.com.zenon.fraud;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Main {
 
@@ -40,12 +43,22 @@ public class Main {
         for (int i = 0; i < 10; i++) {
             System.out.println(listaDeTransactions.get(i).toString());
         }*/
-        TransactionIngestor transactionIngestor = new TransactionIngestor("data/paysim_with_bad_data.csv");
+        TransactionIngestor transactionIngestor = new TransactionIngestor("data/PS_20174392719_1491204439457_log.csv");
         List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
         System.out.println(listaDeTransactions.size());
-        for (int i = 0; i < listaDeTransactions.toArray().length; i++) {
-            System.out.println(listaDeTransactions.get(i).toString());
-        }
+        System.out.println(listaDeTransactions.get(0).toString());
+        long qtdFraud = listaDeTransactions.stream()
+                .filter(Transaction::isFraud)
+                .count();
+        System.out.println("1. Total de Fraudes:: " + qtdFraud);
+
+        List<Transaction> tresMaioresValores = listaDeTransactions.stream()
+                .filter(t-> t != null && t.amount() != null)
+                .sorted(Comparator.comparing(Transaction::amount).reversed())
+                .limit(3)
+                .toList();
+
+        tresMaioresValores.forEach(t -> System.out.println("2. Top 3 Fraudes de Maior Valor:" + " - R$ " + t.amount().floatValue()));
 
     }
 
