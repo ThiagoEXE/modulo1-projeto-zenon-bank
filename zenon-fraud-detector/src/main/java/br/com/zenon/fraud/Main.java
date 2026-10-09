@@ -6,13 +6,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Main {
 
     public static void main(String[] args) {
         
         TransactionIngestor transactionIngestor = new TransactionIngestor("data/PS_20174392719_1491204439457_log.csv");
-        List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        /*List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
         
         FraudAnalyzer fraudAnalyzer = new FraudAnalyzer();
         // a - Apenas transações onde isFraud == true, imprima o tamanho da lista.
@@ -35,7 +36,24 @@ public class Main {
         // e - Conte quantas fraudes ocorreram por tipo de transação (CASH_OUT, TRANSFER, etc...).
         Map<Transaction.Type, Long> fraudesPorTipo = fraudAnalyzer.contaFraudesPorTipo(listaDeTransactions);
         System.out.println("5. Fraudes por Tipo de Transação:");
-        fraudesPorTipo.forEach((tipo, quantidade) -> System.out.println("- " +tipo + ": " + quantidade));
+        fraudesPorTipo.forEach((tipo, quantidade) -> System.out.println("- " +tipo + ": " + quantidade));*/
+        Optional<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        long tempoInicial = System.nanoTime();
+        TransactionRepository transactionListRepository = new TransactionListRepository();
+        TransactionRepository transactionMapRepository = new TransactionMapRepository();
+        String nome1 = "C12345";    
+        Optional<Transaction> transacaoEncontrada = transactionMapRepository.buscaTransacao(listaDeTransactions, nome1);
+        transacaoEncontrada.ifPresentOrElse(
+                transaction -> System.out.println(transaction.toString()),
+                () -> System.out.println("Transação não encontrada para o cliente: " + nome1)
+        );
+        String nome2 = "C1868032458";    
+        Map<String, Transaction> transacaoEncontrada2 = transactionListRepository.buscaTransacao(listaDeTransactions, nome2);
+        transacaoEncontrada2.ifPresentOrElse(
+                transaction -> System.out.println(transaction.toString()),
+                () -> System.out.println("Transação não encontrada para o cliente: " + nome2)
+        );
+        System.out.println("Tempo final de execução: " + (System.nanoTime() - tempoInicial));
     }
 
 }
