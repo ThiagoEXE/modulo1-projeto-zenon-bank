@@ -1,12 +1,6 @@
 package br.com.zenon.fraud;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 public class Main {
 
@@ -37,17 +31,36 @@ public class Main {
         Map<Transaction.Type, Long> fraudesPorTipo = fraudAnalyzer.contaFraudesPorTipo(listaDeTransactions);
         System.out.println("5. Fraudes por Tipo de Transação:");
         fraudesPorTipo.forEach((tipo, quantidade) -> System.out.println("- " +tipo + ": " + quantidade));*/
-        Optional<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        List<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
+        
         long tempoInicial = System.nanoTime();
-        TransactionListRepository transactionListRepository = new TransactionListRepository();
+        
+        TransactionRepository transactionRepository;
+        
+        transactionRepository = new TransactionListRepository(listaDeTransactions.stream().toList());
+        String notFoundOriginName = "C12345";
+        transactionRepository.findByOriginName(notFoundOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente: " + notFoundOriginName));
 
-        String nome2 = "C12345";
-        Optional<Transaction> transacaoEncontrada2 = transactionListRepository.buscaTransacao(listaDeTransactions, nome2);
-        transacaoEncontrada2.ifPresentOrElse(
-                transaction -> System.out.println(transaction.toString()),
-                () -> System.out.println("Transação não encontrada para o cliente: " + nome2)
-        );
-        System.out.println("Tempo final de execução: " + (System.nanoTime() - tempoInicial));
+        String existingOriginName = "C1868032458";
+
+        transactionRepository.findByOriginName(existingOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente: " + existingOriginName));
+        System.out.println("Tempo de busca - List: " + (System.nanoTime() - tempoInicial) / 1_000_000.0 + " ms");
+
+        System.out.println("=================");
+
+        transactionRepository = new TransactionMapRepository(listaDeTransactions.stream().toList());
+
+        tempoInicial = System.nanoTime();
+            
+        transactionRepository.findByOriginName(notFoundOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente: " + notFoundOriginName));
+
+
+        transactionRepository.findByOriginName(existingOriginName)
+                .ifPresentOrElse(IO::println, () -> IO.println("Transação não encontrada para o cliente: " + existingOriginName));
+        System.out.println("Tempo de busca - Map: " + (System.nanoTime() - tempoInicial) / 1_000_000.0 + " ms");
     }
 
 }

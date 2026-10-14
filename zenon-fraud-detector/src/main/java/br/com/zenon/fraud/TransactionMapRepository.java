@@ -1,17 +1,28 @@
 package br.com.zenon.fraud;
-
-import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TransactionMapRepository implements TransactionRepository {
-    
-    public Optional<Transaction> buscaTransacao(Optional<Transaction> listaDeTransactions, String nome) {
-        Optional<Transaction> buscaTransacao = listaDeTransactions
+
+    private final Map<String, Transaction> transactionByOriginName;
+
+    public TransactionMapRepository(List<Transaction> transactions) {
+        Objects.requireNonNull(transactions);
+
+        this.transactionByOriginName = 
+            transactions
                 .stream()
-                .sorted(Comparator.comparing(Transaction::nameOrig))
-                .filter(t -> t.nameOrig().equals(nome))
-                .findFirst();
-        return buscaTransacao;
-        
+                .collect(Collectors.toMap(transaction -> transaction.nameOrig(), 
+                Function.identity()));
+
+    }
+
+    @Override
+    public Optional<Transaction> findByOriginName(String originName) {
+        return Optional.ofNullable(transactionByOriginName.get(originName));
     }
 }

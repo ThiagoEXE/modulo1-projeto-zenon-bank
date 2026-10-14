@@ -4,5 +4,5 @@ import java.util.Optional;
 
 public interface TransactionRepository {
 
- public Optional<Transaction> buscaTransacao(Optional<Transaction> listaDeTransactions, String nome);
+ public Optional<Transaction> findByOriginName(String nome);
 }

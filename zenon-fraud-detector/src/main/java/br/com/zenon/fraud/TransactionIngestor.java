@@ -12,14 +12,14 @@ import java.util.Optional;
 public class TransactionIngestor {
 
     private final String nomeArquivo;
-    private Optional<Transaction> transactions;
+    private List<Transaction> transactions;
 
     public TransactionIngestor(String nomeArquivo) {
         this.nomeArquivo = nomeArquivo;
-        this.transactions = Optional.empty();
+        this.transactions = new ArrayList<>();
     }
 
-    public Optional<Transaction> lerArquivoCSV() {
+    public List<Transaction> lerArquivoCSV() {
 
         try {
             Path arquivo = Path.of(nomeArquivo);
@@ -51,7 +51,7 @@ public class TransactionIngestor {
                     if (validacao) {
 
                         Transaction transaction = new Transaction(step, type, amount, nameOrig, oldbalanceOrg, newbalanceOrig, nameDest, oldbalanceDest, newbalanceDest, isFraud, isFlaggedFraud);
-                        this.transactions = Optional.of(transaction);
+                        this.transactions.add(transaction);
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Erro: " + Arrays.toString(colunas) + " | " + e.getClass().getName() + ": " + e.getMessage());
