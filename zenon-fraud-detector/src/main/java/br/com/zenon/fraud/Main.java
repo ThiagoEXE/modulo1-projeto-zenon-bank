@@ -39,16 +39,10 @@ public class Main {
         fraudesPorTipo.forEach((tipo, quantidade) -> System.out.println("- " +tipo + ": " + quantidade));*/
         Optional<Transaction> listaDeTransactions = transactionIngestor.lerArquivoCSV();
         long tempoInicial = System.nanoTime();
-        TransactionRepository transactionListRepository = new TransactionListRepository();
-        TransactionRepository transactionMapRepository = new TransactionMapRepository();
-        String nome1 = "C12345";    
-        Optional<Transaction> transacaoEncontrada = transactionMapRepository.buscaTransacao(listaDeTransactions, nome1);
-        transacaoEncontrada.ifPresentOrElse(
-                transaction -> System.out.println(transaction.toString()),
-                () -> System.out.println("Transação não encontrada para o cliente: " + nome1)
-        );
-        String nome2 = "C1868032458";    
-        Map<String, Transaction> transacaoEncontrada2 = transactionListRepository.buscaTransacao(listaDeTransactions, nome2);
+        TransactionListRepository transactionListRepository = new TransactionListRepository();
+
+        String nome2 = "C12345";
+        Optional<Transaction> transacaoEncontrada2 = transactionListRepository.buscaTransacao(listaDeTransactions, nome2);
         transacaoEncontrada2.ifPresentOrElse(
                 transaction -> System.out.println(transaction.toString()),
                 () -> System.out.println("Transação não encontrada para o cliente: " + nome2)

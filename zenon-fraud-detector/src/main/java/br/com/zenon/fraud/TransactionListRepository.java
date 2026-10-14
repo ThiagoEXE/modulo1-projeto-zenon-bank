@@ -3,9 +3,9 @@ package br.com.zenon.fraud;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class TransactionListRepository implements TransactionRepository {
+public class TransactionListRepository {
 
-    @Override
+    //@Override
     public Optional<Transaction> buscaTransacao(Optional<Transaction> listaDeTransactions, String nome) {
         Optional<Transaction> buscaTransacao = listaDeTransactions
                 .stream()
