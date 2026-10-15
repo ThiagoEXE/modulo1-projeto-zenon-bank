@@ -28,7 +28,7 @@ public class ReportMain {
 
         BigDecimal valueTotal = streamLazy3.skip(1)
                 .map(line -> line.split(","))
-                .map(columns -> new BigDecimal (columns[5].trim()))
+                .map(columns -> new BigDecimal (columns[2].trim()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         IO.println("Valor total transacionado: " + valueTotal);
         streamLazy3.close();
