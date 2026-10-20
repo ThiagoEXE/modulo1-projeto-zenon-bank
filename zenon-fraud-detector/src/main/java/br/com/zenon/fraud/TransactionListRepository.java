@@ -20,4 +20,9 @@ private List<Transaction> transactions;
                 .findFirst();
         
     }
+
+    @Override
+    public void save(Transaction transaction) {
+
+    }
 }

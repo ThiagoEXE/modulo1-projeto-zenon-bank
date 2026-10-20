@@ -1,0 +1,14 @@
+services:
+  db.fraud:
+    image: mysql:9
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_DATABASE: fraud
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql.fraud:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+volumes:
+  mysql.fraud:
