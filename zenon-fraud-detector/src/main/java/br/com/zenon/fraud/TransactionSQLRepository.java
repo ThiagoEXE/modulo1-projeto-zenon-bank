@@ -9,6 +9,15 @@ import java.util.Optional;
 public class TransactionSQLRepository implements TransactionRepository{
     private Optional<Transaction> fraud;
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ExceptionInInitializerError(
+                    "MySQL JDBC driver was not found. Check if mysql-connector-j is in the runtime classpath."
+            );
+        }
+    }
     @Override
     public Optional<Transaction> findByOriginName(String nome) {
         String sql = "SELECT * FROM fraud WHERE name_orig = ?";

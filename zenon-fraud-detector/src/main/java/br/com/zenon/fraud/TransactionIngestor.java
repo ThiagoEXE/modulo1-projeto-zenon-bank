@@ -27,7 +27,7 @@ public class TransactionIngestor {
 
             String[] linhaArquivo = conteudo.split("\n");
 
-            for (int i = 1; i <= 100; i++) {
+            for (int i = 1; i <= 10000; i++) {
                 String linha = linhaArquivo[i];
                 String[] colunas = linha.split(",");
 
